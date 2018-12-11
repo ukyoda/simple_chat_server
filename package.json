@@ -1,0 +1,35 @@
+{
+    "name": "simple_chat_server",
+    "version": "1.0.0",
+    "description": "",
+    "main": "webpack.mix.js",
+    "scripts": {
+        "dev": "npm run development",
+        "development": "cross-env NODE_ENV=development node_modules/webpack/bin/webpack.js --progress --hide-modules --config=node_modules/webpack-mix/setup/webpack.config.js",
+        "watch": "npm run development -- --watch",
+        "watch-poll": "npm run watch -- --watch-poll",
+        "production": "cross-env NODE_ENV=production node_modules/webpack/bin/webpack.js --progress --hide-modules --config=node_modules/webpack-mix/setup/webpack.config.js",
+        "prod": "npm run production",
+        "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://gitlab.com/ukyoda/simple_chat_server.git"
+    },
+    "author": "",
+    "license": "ISC",
+    "bugs": {
+        "url": "https://gitlab.com/ukyoda/simple_chat_server/issues"
+    },
+    "homepage": "https://gitlab.com/ukyoda/simple_chat_server#readme",
+    "devDependencies": {
+        "babel-preset-react": "^6.24.1",
+        "cross-env": "^5.2.0",
+        "webpack-cli": "^3.1.2",
+        "webpack-mix": "^2.0.2"
+    },
+    "dependencies": {
+        "react": "^16.6.3",
+        "react-dom": "^16.6.3"
+    }
+}
