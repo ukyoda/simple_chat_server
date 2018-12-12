@@ -4,13 +4,16 @@ import PropTypes from 'prop-types';
 class StatusView extends Component {
     constructor(props) {
         super(props);
-        this.onOpen = e => this.setState(this.changeState());
+        this.onOpen = e => {
+            console.log('Connect');
+            this.setState(this.changeState())
+        };
         this.onClose = e => this.setState(this.changeState());
         this.onError = e => {this.errorState(e.message)};
         this.props.socket.addEventListener('open', this.onOpen);
         this.props.socket.addEventListener('close', this.onClose);
         this.props.socket.addEventListener('error', this.onError);
-        this.status = this.changeState();
+        this.state = this.changeState();
     }
 
     componentWillUnmount(props) {
@@ -28,9 +31,8 @@ class StatusView extends Component {
 
     changeState() {
         console.log(this.props.socket.readyState);
-        const status = {
-            status: this.props.socket.readyState
-        }
+        const status = this.status || {};
+        status.status = this.props.socket.readyState;
         switch(this.props.socket.readyState) {
         case WebSocket.OPEN:
             status.message = <span className='text-success'>ONLINE</span>
@@ -49,7 +51,8 @@ class StatusView extends Component {
     }
 
     render() {
-        const {message} = this.status;
+        console.log('AAA');
+        const {message} = this.state;
         return (
             <div>
                 <span>接続先: {this.props.socket.url}</span>

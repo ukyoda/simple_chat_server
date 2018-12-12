@@ -1,15 +1,21 @@
 from flask import Flask, render_template
 from flask_sockets import Sockets
 
+
 app = Flask(__name__)
 sockets = Sockets(app)
 
 
 @sockets.route('/')
 def echo_socket(ws):
-    while True:
-        message = ws.receive()
-        ws.send(message)
+    while not ws.closed:
+        try:
+            message = ws.receive()
+            print('aaa')
+            ws.send(message)
+        except:
+            pass
+    print('Socket Close')
 
 @app.route('/')
 def hello():
