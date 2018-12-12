@@ -36,7 +36,8 @@ export default class SocketManager extends EventEmitter {
     sendMessage(message) {
         const sendData = {
             msg_type: 'message',
-            nickname: this.nickname
+            nickname: this.nickname,
+            message: message
         };
         this.send(sendData);
     }
@@ -45,14 +46,12 @@ export default class SocketManager extends EventEmitter {
         if(typeof data != 'string') {
             data = JSON.stringify(data);
         }
-        console.log(data);
         this.socket.send(data);
     }
 
     onMessage(e) {
         const data = e.data;
         let obj = {};
-        console.log(data);
         try {
             obj = JSON.parse(data);
         } catch (e) {

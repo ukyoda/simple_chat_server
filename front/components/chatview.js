@@ -1,38 +1,54 @@
 import React, {Component} from 'react';
-import PropTypes from 'prop-types';
+import ReactDOM from 'react-dom';
+import ChatList from './chatlist';
+import MessageForm from './messageform';
+import StatusView from './statusview';
 import SocketManager from '../socket';
+import {Form, Input, Button, FormGroup, Label} from 'reactstrap';
 
-class ChatView extends Component {
-
+export default class ChatView extends Component {
     constructor(props) {
         super(props);
-        this.state = {message: ''};
-        this.onMessage = this.onMessage.bind(this);
-    }
-    
-    componentDidMount() {
-        this.props.socket.on('message', this.onMessage);
+        this.state = {loggedin: false};
     }
 
-    componentWillUnmount(props) {
-        this.props.socket.removeListener('message', this.onMessage);
-    }
-
-    onMessage(message) {
-        this.setState(message);
+    onSubmit(e) {
+        e.preventDefault();
+        const nickname = document.querySelector('#nickname').value;
+        if(!nickname) {
+            return;
+        }
+        const state = this.state;
+        if(!this.state.socket) {
+            state.socket = new SocketManager(`ws://${location.host}`, nickname);
+        }
+        state.loggedin = true;
+        this.setState(state);
     }
 
     render() {
-        const message = this.state.message || '';
-        return (
-            <div>{message}</div>
-        );
+        const {loggedin} = this.state;
+        if(loggedin) {
+            const {socket} = this.state;
+            return (
+                <div>
+                    <StatusView socket={socket}/>
+                    <MessageForm socket={socket} />
+                    <ChatList socket={socket} />
+                </div>
+            );
+        } else {
+            return (
+                <div>
+                    <Form onSubmit={this.onSubmit.bind(this)}>
+                        <FormGroup>
+                            <Label for="nickname">名前</Label>
+                            <Input type="text" name="nickname" id="nickname" placeholder="名前を入力してください" />
+                        </FormGroup>
+                        <Button>チャットを始める</Button>
+                    </Form>
+                </div>
+            );
+        }
     }
 }
-
-ChatView.propTypes = {
-    socket: PropTypes.instanceOf(SocketManager).isRequired,
-    nickname: PropTypes.string.isRequired
-};
-
-export default ChatView;

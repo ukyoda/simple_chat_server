@@ -4,19 +4,18 @@ import {Container} from 'reactstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import StatusView from './components/statusview';
 import MessageForm from './components/messageform';
-import ChatView from './components/chatview';
+import ChatList from './components/chatlist';
 import SocketManager from './socket';
+import ChatView from './components/chatview';
 
-const socket = new SocketManager('ws://localhost:8000');
+//const socket = new SocketManager(`ws://${location.host}`);
 
 const Root = () => {
     return (
         <div>
             <Container>
                 <h1>WebSocketクライアント</h1>
-                <StatusView socket={socket}/>
-                <MessageForm socket={socket} nickname="ukyoda"/>
-                <ChatView socket={socket} nickname="ukyoda"/>
+                <ChatView/>
             </Container>
         </div>
     );

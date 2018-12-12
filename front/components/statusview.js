@@ -38,7 +38,6 @@ class StatusView extends Component {
     }
 
     changeState() {
-        console.log(this.props.socket.readyState);
         const status = this.status || {};
         status.status = this.props.socket.readyState;
         switch(this.props.socket.readyState) {
@@ -59,7 +58,6 @@ class StatusView extends Component {
     }
 
     render() {
-        console.log('AAA');
         const {message} = this.state;
         const url = this.props.socket.url;
         const nickname = this.props.socket.nickname;

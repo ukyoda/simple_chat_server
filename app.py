@@ -10,6 +10,7 @@ import json
 from gevent import monkey
 monkey.patch_all()
 
+from datetime import datetime
 
 import argparse
 def getargs():
@@ -61,7 +62,8 @@ class ChatApplication(WebSocketApplication):
             client.ws.send(json.dumps({
                 'msg_type': 'message',
                 'nickname': message['nickname'],
-                'message': message['message']
+                'message': message['message'],
+                'created_at': datetime.now().strftime('%Y-%m-%d %H:%M:%S')
             }))
 
     def on_close(self, reason):
