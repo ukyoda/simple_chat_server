@@ -4,8 +4,8 @@ import PropTypes from 'prop-types';
 class StatusView extends Component {
     constructor(props) {
         super(props);
-        this.onOpen = e => this.changeState();
-        this.onClose = e => this.changeState();
+        this.onOpen = e => this.setState(this.changeState());
+        this.onClose = e => this.setState(this.changeState());
         this.onError = e => {this.errorState(e.message)};
         this.props.socket.addEventListener('open', this.onOpen);
         this.props.socket.addEventListener('close', this.onClose);
@@ -27,6 +27,7 @@ class StatusView extends Component {
     }
 
     changeState() {
+        console.log(this.props.socket.readyState);
         const status = {
             status: this.props.socket.readyState
         }
@@ -51,9 +52,9 @@ class StatusView extends Component {
         const {message} = this.status;
         return (
             <div>
-                <span>接続先: ${this.socket.url}</span>
+                <span>接続先: {this.props.socket.url}</span>
                 <span>状態: </span>
-                ${message}
+                {message}
             </div>
         )
     }
