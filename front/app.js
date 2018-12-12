@@ -5,8 +5,9 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import StatusView from './components/statusview';
 import MessageForm from './components/messageform';
 import ChatView from './components/chatview';
+import SocketManager from './socket';
 
-const socket = new WebSocket('ws://localhost:8000');
+const socket = new SocketManager('ws://localhost:8000');
 
 const Root = () => {
     return (

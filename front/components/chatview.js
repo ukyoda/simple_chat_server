@@ -1,5 +1,7 @@
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
+import SocketManager from '../socket';
+
 class ChatView extends Component {
 
     constructor(props) {
@@ -9,17 +11,15 @@ class ChatView extends Component {
     }
     
     componentDidMount() {
-        this.props.socket.addEventListener('message', this.onMessage);
+        this.props.socket.on('message', this.onMessage);
     }
 
     componentWillUnmount(props) {
-        this.props.socket.removeEventListener('message', this.onMessage);
+        this.props.socket.removeListener('message', this.onMessage);
     }
 
-    onMessage(e) {
-        const message = e.data;
-        console.log(e);
-        this.setState({message});
+    onMessage(message) {
+        this.setState(message);
     }
 
     render() {
@@ -31,7 +31,7 @@ class ChatView extends Component {
 }
 
 ChatView.propTypes = {
-    socket: PropTypes.instanceOf(WebSocket).isRequired,
+    socket: PropTypes.instanceOf(SocketManager).isRequired,
     nickname: PropTypes.string.isRequired
 };
 

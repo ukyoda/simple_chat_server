@@ -1,6 +1,8 @@
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 import {Row, Col} from 'reactstrap';
+import SocketManager from '../socket';
+
 class StatusView extends Component {
     constructor(props) {
         super(props);
@@ -11,15 +13,15 @@ class StatusView extends Component {
     }
     
     componentDidMount() {
-        this.props.socket.addEventListener('open', this.onOpen);
-        this.props.socket.addEventListener('close', this.onClose);
-        this.props.socket.addEventListener('error', this.onError);
+        this.props.socket.on('open', this.onOpen);
+        this.props.socket.on('close', this.onClose);
+        this.props.socket.on('error', this.onError);
     }
 
     componentWillUnmount() {
-        this.props.socket.removeEventListener('open', this.onOpen);
-        this.props.socket.removeEventListener('error', this.onError);
-        this.props.socket.removeEventListener('close', this.onClose);
+        this.props.socket.removeListener('open', this.onOpen);
+        this.props.socket.removeListener('error', this.onError);
+        this.props.socket.removeListener('close', this.onClose);
     }
 
     onOpen(e) {
@@ -76,7 +78,7 @@ class StatusView extends Component {
 }
 
 StatusView.propTypes = {
-    socket: PropTypes.instanceOf(WebSocket).isRequired,
+    socket: PropTypes.instanceOf(SocketManager).isRequired,
     nickname: PropTypes.string.isRequired
 };
 

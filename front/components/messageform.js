@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 import {Button, Form, FormGroup, Label, Input} from 'reactstrap';
+import SocketManager from '../socket';
 
 class MessageForm extends Component {
     constructor(props) {
@@ -10,6 +11,7 @@ class MessageForm extends Component {
     }
 
     onSubmit(e) {
+        e.preventDefault();
         const {nickname, socket} = this.props;
         const message = document.querySelector('#message').value;
         document.querySelector('#message').value = '';
@@ -29,12 +31,12 @@ class MessageForm extends Component {
     render() {
         const nickname = this.props.nickname;
         return (
-            <Form inline>
+            <Form inline onSubmit={this.onSubmit}>
                 <FormGroup className = "mb-2 mr-sm-2 mb-sm-0">
                     <Label for="message"  className="mr-sm-2">Message</Label>
                     <Input type="text" name="message" id="message" placeholder="メッセージを入力してください"/>
                 </FormGroup>
-                <Button onClick={this.onSubmit}>送信</Button>
+                <Button>送信</Button>
             </Form>
         );
     }
@@ -42,7 +44,7 @@ class MessageForm extends Component {
 
 MessageForm.propTypes = {
     nickname: PropTypes.string.isRequired,
-    socket: PropTypes.instanceOf(WebSocket).isRequired
+    socket: PropTypes.instanceOf(SocketManager).isRequired
 };
 
 export default MessageForm;
