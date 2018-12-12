@@ -14,7 +14,7 @@ const Root = () => {
         <div>
             <Container>
                 <h1>WebSocketクライアント</h1>
-                <StatusView socket={socket} nickname='ukyoda'/>
+                <StatusView socket={socket}/>
                 <MessageForm socket={socket} nickname="ukyoda"/>
                 <ChatView socket={socket} nickname="ukyoda"/>
             </Container>

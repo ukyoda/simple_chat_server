@@ -26,12 +26,7 @@ class StatusView extends Component {
 
     onOpen(e) {
         // ログインメッセージ送信
-        const {nickname} = this.props;
-        const sendData = {
-            msg_type: 'update_clients',
-            nickname
-        };
-        this.props.socket.send(JSON.stringify(sendData));
+        this.props.socket.updateClients();
         this.setState(this.changeState());
     }
 
@@ -67,10 +62,12 @@ class StatusView extends Component {
         console.log('AAA');
         const {message} = this.state;
         const url = this.props.socket.url;
+        const nickname = this.props.socket.nickname;
         return (
             <Row>
                 <Col>接続先: {url}</Col>
                 <Col>状態: {message} </Col>
+                <Col>あなたの名前: {nickname}</Col>
             </Row>
         )
     }
@@ -79,7 +76,6 @@ class StatusView extends Component {
 
 StatusView.propTypes = {
     socket: PropTypes.instanceOf(SocketManager).isRequired,
-    nickname: PropTypes.string.isRequired
 };
 
 export default StatusView;

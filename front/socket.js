@@ -25,16 +25,36 @@ export default class SocketManager extends EventEmitter {
         return this.socket.readyState;
     }
 
-    send(message) {
-        console.log(message);
-        this.socket.send(message);
+    updateClients() {
+        const sendData = {
+            msg_type: 'update_clients',
+            nickname: this.nickname
+        };
+        this.send(sendData);
+    }
+
+    sendMessage(message) {
+        const sendData = {
+            msg_type: 'message',
+            nickname: this.nickname
+        };
+        this.send(sendData);
+    }
+
+    send(data) {
+        if(typeof data != 'string') {
+            data = JSON.stringify(data);
+        }
+        console.log(data);
+        this.socket.send(data);
     }
 
     onMessage(e) {
         const data = e.data;
+        let obj = {};
         console.log(data);
         try {
-            const obj = JSON.parse(data);
+            obj = JSON.parse(data);
         } catch (e) {
             console.error(`Json Parse Error: ${e.message} | ${data}`);
             return;
