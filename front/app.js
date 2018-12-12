@@ -3,6 +3,8 @@ import ReactDOM from "react-dom";
 import {Container} from 'reactstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import StatusView from './components/statusview';
+import MessageForm from './components/messageform';
+import ChatView from './components/chatview';
 
 const socket = new WebSocket('ws://localhost:8000');
 
@@ -11,7 +13,9 @@ const Root = () => {
         <div>
             <Container>
                 <h1>WebSocketクライアント</h1>
-                <StatusView socket={socket}/>
+                <StatusView socket={socket} nickname='ukyoda'/>
+                <MessageForm socket={socket} nickname="ukyoda"/>
+                <ChatView socket={socket} nickname="ukyoda"/>
             </Container>
         </div>
     );

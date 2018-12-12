@@ -1,25 +1,36 @@
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
-
+import {Row, Col} from 'reactstrap';
 class StatusView extends Component {
     constructor(props) {
         super(props);
-        this.onOpen = e => {
-            console.log('Connect');
-            this.setState(this.changeState())
-        };
+        this.onOpen = this.onOpen.bind(this);
         this.onClose = e => this.setState(this.changeState());
         this.onError = e => {this.errorState(e.message)};
+        this.state = this.changeState();
+    }
+    
+    componentDidMount() {
         this.props.socket.addEventListener('open', this.onOpen);
         this.props.socket.addEventListener('close', this.onClose);
         this.props.socket.addEventListener('error', this.onError);
-        this.state = this.changeState();
     }
 
-    componentWillUnmount(props) {
+    componentWillUnmount() {
         this.props.socket.removeEventListener('open', this.onOpen);
         this.props.socket.removeEventListener('error', this.onError);
         this.props.socket.removeEventListener('close', this.onClose);
+    }
+
+    onOpen(e) {
+        // ログインメッセージ送信
+        const {nickname} = this.props;
+        const sendData = {
+            msg_type: 'update_clients',
+            nickname
+        };
+        this.props.socket.send(JSON.stringify(sendData));
+        this.setState(this.changeState());
     }
 
     errorState(message) {
@@ -53,19 +64,20 @@ class StatusView extends Component {
     render() {
         console.log('AAA');
         const {message} = this.state;
+        const url = this.props.socket.url;
         return (
-            <div>
-                <span>接続先: {this.props.socket.url}</span>
-                <span>状態: </span>
-                {message}
-            </div>
+            <Row>
+                <Col>接続先: {url}</Col>
+                <Col>状態: {message} </Col>
+            </Row>
         )
     }
 
 }
 
 StatusView.propTypes = {
-    socket: PropTypes.instanceOf(WebSocket).isRequired
+    socket: PropTypes.instanceOf(WebSocket).isRequired,
+    nickname: PropTypes.string.isRequired
 };
 
 export default StatusView;
