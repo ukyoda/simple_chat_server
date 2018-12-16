@@ -82,6 +82,7 @@ def index():
 
 if __name__ == '__main__':
     args = getargs()
+    print('Host: {}, Port: {}'.format(args.host, args.port))
     WebSocketServer(
         (args.host, args.port),
         Resource([
