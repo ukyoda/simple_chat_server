@@ -10,12 +10,12 @@ RUN    apt-get update \
     && apt-get -y install nodejs npm
 
 RUN npm install -g n
-RUN n latest
+RUN n v13.1.0 
 
 COPY ./ /app
 WORKDIR /app
 RUN pip3 install -r requirements.txt
-RUN npm install
+RUN npm ci
 RUN npm run prod
 
 CMD ["python3", "app.py"]
